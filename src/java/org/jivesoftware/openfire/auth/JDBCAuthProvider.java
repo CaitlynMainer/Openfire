@@ -303,7 +303,7 @@ public class JDBCAuthProvider implements AuthProvider {
             }
             password = rs.getString(1);
 			if (passwordType == PasswordType.ipb3) {
-				salt = rs.getString(2);
+				password = password + "++" + rs.getString(2);
 			}
         }
         catch (SQLException e) {
@@ -347,6 +347,10 @@ public class JDBCAuthProvider implements AuthProvider {
                 password = StringUtils.hash(password, "SHA-512");
             }
 			else if (passwordType == PasswordType.ipb3) {
+				int tempindex = userPassword.indexOf("++");
+				String salt = userPassword.substring(tempindex+2);
+				userPassword = userPassword.substring(0, tempindex);	
+				//password = StringUtils.hash("--"+salt+"--"+password+"--", "SHA-1");
 				password = StringUtils.hash(StringUtils.hash(salt, "MD5") + StringUtils.hash(password, "MD5"), "MD5");;
 			}
             pstmt.setString(1, password);
