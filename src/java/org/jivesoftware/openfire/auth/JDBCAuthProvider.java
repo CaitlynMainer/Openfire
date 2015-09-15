@@ -336,12 +336,7 @@ public class JDBCAuthProvider implements AuthProvider {
             pstmt.setString(2, username);
 			
 			String userPassword;
-			try {
-				userPassword = getPasswordValue(username);
-			}
-			catch (UserNotFoundException unfe) {
-				throw new UnauthorizedException();
-			}
+			userPassword = getPasswordValue(username);
 			
             if (passwordType == PasswordType.md5) {
                 password = StringUtils.hash(password, "MD5");
