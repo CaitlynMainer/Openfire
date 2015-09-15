@@ -147,7 +147,6 @@ public class JDBCAuthProvider implements AuthProvider {
             }
         }
         String userPassword;
-		String salt = null;
         try {
             userPassword = getPasswordValue(username);
         }
