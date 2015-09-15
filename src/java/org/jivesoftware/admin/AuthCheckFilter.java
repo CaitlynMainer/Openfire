@@ -48,7 +48,7 @@ public class AuthCheckFilter implements Filter {
 
 	private static final Logger Log = LoggerFactory.getLogger(AuthCheckFilter.class);
 
-    private static Set<String> excludes = new ConcurrentHashSet<String>();
+    private static ConcurrentHashSet<String> excludes = new ConcurrentHashSet<String>();
 
     private ServletContext context;
     private String defaultLoginPage;
