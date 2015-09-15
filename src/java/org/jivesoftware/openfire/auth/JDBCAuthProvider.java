@@ -147,6 +147,7 @@ public class JDBCAuthProvider implements AuthProvider {
             }
         }
         String userPassword;
+		String salt = null;
         try {
             userPassword = getPasswordValue(username);
         }
@@ -167,6 +168,13 @@ public class JDBCAuthProvider implements AuthProvider {
         else if (passwordType == PasswordType.sha512) {
             password = StringUtils.hash(password, "SHA-512");
         }
+		else if (passwordType == PasswordType.ipb3) {
+			int tempindex = userPassword.indexOf("++");
+			String salt = userPassword.substring(tempindex+2);
+			userPassword = userPassword.substring(0, tempindex);	
+			//password = StringUtils.hash("--"+salt+"--"+password+"--", "SHA-1");
+			password = StringUtils.hash(StringUtils.hash(salt, "MD5") + StringUtils.hash(password, "MD5"), "MD5");;
+		}
         if (!password.equals(userPassword)) {
             throw new UnauthorizedException();
         }
@@ -384,7 +392,12 @@ public class JDBCAuthProvider implements AuthProvider {
         /**
           * The password is stored as a hex-encoded SHA-512 hash.
           */
-        sha512;
+        sha512,
+		
+		/**
+		  * The password as stored by IPB 3.* "md5(md5(salt) + md5(pass))"";
+		  */
+		ipb3;
    }
 
     /**
