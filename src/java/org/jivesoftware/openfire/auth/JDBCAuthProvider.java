@@ -172,7 +172,11 @@ public class JDBCAuthProvider implements AuthProvider {
 			String salt = userPassword.substring(tempindex+2);
 			userPassword = userPassword.substring(0, tempindex);	
 			//password = StringUtils.hash("--"+salt+"--"+password+"--", "SHA-1");
-			password = StringUtils.hash(StringUtils.hash(salt, "MD5") + StringUtils.hash(password, "MD5"), "MD5");;
+			password = StringUtils.hash(StringUtils.hash(salt, "MD5") + StringUtils.hash(password, "MD5"), "MD5");
+			Log.info("pass++salt " + tempindex);
+			Log.info("Hash " + password);
+			Log.info("salt " + password);
+			Log.info("Pass " + StringUtils.hash(password, "MD5"));
 		}
         if (!password.equals(userPassword)) {
             throw new UnauthorizedException();
