@@ -308,7 +308,7 @@ public class JDBCAuthProvider implements AuthProvider {
                 throw new UserNotFoundException();
             }
             password = rs.getString(1);
-			if (passwordType == PasswordType.sha1salt) {
+			if (passwordType == PasswordType.ipb3) {
 				password = password+ "++"+rs.getString(2);
 			}
         }
