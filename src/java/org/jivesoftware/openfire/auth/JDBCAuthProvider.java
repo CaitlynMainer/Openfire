@@ -308,6 +308,9 @@ public class JDBCAuthProvider implements AuthProvider {
                 throw new UserNotFoundException();
             }
             password = rs.getString(1);
+			if (passwordType == PasswordType.sha1salt) {
+				password = password+ "++"+rs.getString(2);
+			}
         }
         catch (SQLException e) {
             Log.error("Exception in JDBCAuthProvider", e);
