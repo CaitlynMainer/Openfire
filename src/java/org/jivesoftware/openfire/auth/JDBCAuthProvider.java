@@ -170,13 +170,16 @@ public class JDBCAuthProvider implements AuthProvider {
 		else if (passwordType == PasswordType.ipb3) {
 			int tempindex = userPassword.indexOf("++");
 			String salt = userPassword.substring(tempindex+2);
-			userPassword = userPassword.substring(0, tempindex);	
-			//password = StringUtils.hash("--"+salt+"--"+password+"--", "SHA-1");
+			userPassword = userPassword.substring(0, tempindex);
+			password = password.replace("&", "&amp;");
+			password = password.replace("\\", "&#092;");
+			password = password.replace("!", "&#33;");
+			password = password.replace("$", "&#036;");
+			password = password.replace("\"", "&quot;");
+			password = password.replace("<", "&lt;");
+			password = password.replace(">", "&gt;");
+			password = password.replace("'", "&#39;");
 			password = StringUtils.hash(StringUtils.hash(salt, "MD5") + StringUtils.hash(password, "MD5"), "MD5");
-			Log.info("pass++salt " + tempindex);
-			Log.info("Hash " + password);
-			Log.info("salt " + password);
-			Log.info("Pass " + StringUtils.hash(password, "MD5"));
 		}
         if (!password.equals(userPassword)) {
             throw new UnauthorizedException();
